@@ -1,3 +1,4 @@
+import pytest
 from vm_servers import VM, PhysicalServer
 
 
@@ -77,3 +78,38 @@ class TestPhysicalServer:
 
         # Then
         assert not result
+
+    def test_allocate_success(self):
+        # Given
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        vm = VM(
+            required_cores=1,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+
+        # When
+        ps.allocate(vm)
+
+        # Then
+
+    def test_allocate_failed(self):
+        # Given
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        vm = VM(
+            required_cores=10,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+
+        # When, Then
+        with pytest.raises(ValueError):
+            ps.allocate(vm)

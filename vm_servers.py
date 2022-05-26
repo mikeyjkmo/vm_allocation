@@ -14,6 +14,7 @@ class PhysicalServer:
         self._remaining_cores = available_cores
         self._remaining_memory_mb = available_memory_mb
         self._remaining_network_bandwidth_kbps = available_network_bandwidth_kbps
+        self.allocated_vms = []
 
     def can_allocate(self, vm: "VM"):
         if self._available_cores < vm.required_cores:
@@ -24,6 +25,15 @@ class PhysicalServer:
             return False
 
         return True
+
+    def allocate(self, vm: "VM"):
+        if not self.can_allocate(vm):
+            raise ValueError("VM cannot be allocated due to insufficient resource")
+
+        self._available_cores = vm.required_cores
+        self._available_memory_mb = vm.required_memory_mb
+        self._available_network_bandwidth_kbps = vm.required_network_bandwidth_kbps
+        self.allocated_vms.append(vm)
 
 
 @dataclass
