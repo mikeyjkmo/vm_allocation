@@ -65,14 +65,14 @@ class ResourceAllocator:
         Allocate VM on the most appropriate PhysicalServer using
         "best-fit" approximation algorithm
         """
-        max_post_allocated_capacity = -1
+        min_post_allocated_capacity = float('inf')
         most_suitable_ps = None
 
         for ps in self._available_servers:
             if ps.can_allocate(vm):
-                if ps.post_allocated_capacity(vm) > max_post_allocated_capacity:
+                if ps.post_allocated_capacity(vm) < min_post_allocated_capacity:
                     most_suitable_ps = ps
-                    max_post_allocated_capacity = ps.post_allocated_capacity(vm)
+                    min_post_allocated_capacity = ps.post_allocated_capacity(vm)
 
         if not most_suitable_ps:
             raise ValueError("No suitable physical server can host this VM")

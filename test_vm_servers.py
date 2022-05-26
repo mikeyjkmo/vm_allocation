@@ -160,3 +160,34 @@ class TestResourceAllocator:
         result = allocator.allocate(vm)
 
         assert result is ps_large
+
+    def test_allocate_on_fullest_server_post_allocation(self):
+        allocator = ResourceAllocator()
+
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps)
+        ps2 = PhysicalServer(
+            available_cores=5,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps2)
+        ps3 = PhysicalServer(
+            available_cores=3,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps3)
+
+        vm = VM(
+            required_cores=3,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+        result = allocator.allocate(vm)
+
+        assert result is ps3
