@@ -9,14 +9,16 @@ class PhysicalServer:
         available_network_bandwidth_kbps: int,
     ):
         self._available_cores = available_cores
-        self._available_memory_mb = available_cores
+        self._available_memory_mb = available_memory_mb
         self._available_network_bandwidth_kbps = available_network_bandwidth_kbps
         self._remaining_cores = available_cores
-        self._remaining_memory_mb = available_cores
+        self._remaining_memory_mb = available_memory_mb
         self._remaining_network_bandwidth_kbps = available_network_bandwidth_kbps
 
     def can_allocate(self, vm: "VM"):
         if self._available_cores < vm.required_cores:
+            return False
+        if self._available_memory_mb < vm.required_memory_mb:
             return False
 
         return True

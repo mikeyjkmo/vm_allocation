@@ -39,3 +39,22 @@ class TestPhysicalServer:
 
         # Then
         assert not result
+
+    def test_cannot_fit_vm_due_to_lack_of_memory(self):
+        # Given
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=128,
+            available_network_bandwidth_kbps=2048,
+        )
+        vm = VM(
+            required_cores=4,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+
+        # When
+        result = ps.can_allocate(vm)
+
+        # Then
+        assert not result
