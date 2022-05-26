@@ -16,6 +16,9 @@ class PhysicalServer:
         self._remaining_network_bandwidth_kbps = available_network_bandwidth_kbps
 
     def can_allocate(self, vm: "VM"):
+        if self._available_cores < vm.required_cores:
+            return False
+
         return True
 
 
