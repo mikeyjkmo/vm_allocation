@@ -20,6 +20,8 @@ class PhysicalServer:
             return False
         if self._available_memory_mb < vm.required_memory_mb:
             return False
+        if self._available_network_bandwidth_kbps < vm.required_network_bandwidth_kbps:
+            return False
 
         return True
 
