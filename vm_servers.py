@@ -55,4 +55,9 @@ class ResourceAllocator:
         Allocate VM on the most appropriate PhysicalServer using
         "best-fit" approximation algorithm
         """
-        return self._available_servers[0]
+        for ps in self._available_servers:
+            if ps.can_allocate(vm):
+                ps.allocate(vm)
+                return ps
+
+        raise ValueError("No suitable physical server can host this VM")

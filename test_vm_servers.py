@@ -135,3 +135,28 @@ class TestResourceAllocator:
         result = allocator.allocate(vm)
 
         assert result is ps
+
+    def test_allocate_on_first_available_server(self):
+        allocator = ResourceAllocator()
+
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps)
+        ps_large = PhysicalServer(
+            available_cores=10,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps_large)
+
+        vm = VM(
+            required_cores=5,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+        result = allocator.allocate(vm)
+
+        assert result is ps_large
