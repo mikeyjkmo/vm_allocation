@@ -30,10 +30,20 @@ class PhysicalServer:
         if not self.can_allocate(vm):
             raise ValueError("VM cannot be allocated due to insufficient resource")
 
-        self._available_cores = vm.required_cores
-        self._available_memory_mb = vm.required_memory_mb
-        self._available_network_bandwidth_kbps = vm.required_network_bandwidth_kbps
+        self._available_cores -= vm.required_cores
+        self._available_memory_mb -= vm.required_memory_mb
+        self._available_network_bandwidth_kbps -= vm.required_network_bandwidth_kbps
         self.allocated_vms.append(vm)
+
+    def post_allocated_capacity(self, vm: "VM"):
+        """
+        Get the capacity of this physical server if it were to allocate this VM
+        """
+        return sum((
+            self._available_cores - vm.required_cores,
+            self._available_memory_mb - vm.required_memory_mb,
+            self._available_network_bandwidth_kbps - vm.required_network_bandwidth_kbps,
+        ))
 
 
 @dataclass
@@ -55,9 +65,17 @@ class ResourceAllocator:
         Allocate VM on the most appropriate PhysicalServer using
         "best-fit" approximation algorithm
         """
+        max_post_allocated_capacity = -1
+        most_suitable_ps = None
+
         for ps in self._available_servers:
             if ps.can_allocate(vm):
-                ps.allocate(vm)
-                return ps
+                if ps.post_allocated_capacity(vm) > max_post_allocated_capacity:
+                    most_suitable_ps = ps
+                    max_post_allocated_capacity = ps.post_allocated_capacity(vm)
 
-        raise ValueError("No suitable physical server can host this VM")
+        if not most_suitable_ps:
+            raise ValueError("No suitable physical server can host this VM")
+
+        most_suitable_ps.allocate(vm)
+        return most_suitable_ps
