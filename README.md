@@ -15,6 +15,12 @@ the allocation of virtual machines to physical servers.
 > poetry install
 ```
 
+## Run Tests
+
+```bash
+> poetry run pytest
+```
+
 ## Run
 
 ```bash
