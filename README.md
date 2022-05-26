@@ -24,4 +24,10 @@ the allocation of virtual machines to physical servers.
 ## Limitations
 
 - PhysicalServers are hardcoded
-- Allocations are not persisted between runs
+- Allocations are not persisted between runs, so CLI is not particularly useful in the current state.
+
+## Future Improvements
+
+- Allow physical servers to be added/removed via the CLI
+- Persist state between runs
+- Allow VMs to be deallocated
