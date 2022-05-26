@@ -20,3 +20,8 @@ the allocation of virtual machines to physical servers.
 ```bash
 > poetry run python vm_servers.py <required_cores> <required_memory_mb> <required_network_bandwidth_kbps>
 ```
+
+## Limitations
+
+- PhysicalServers are hardcoded
+- Allocations are not persisted between runs
