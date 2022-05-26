@@ -6,6 +6,7 @@ class TestPhysicalServer:
     def test_can_fit_vm(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -25,6 +26,7 @@ class TestPhysicalServer:
     def test_cannot_fit_vm_due_to_lack_of_cores(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -44,6 +46,7 @@ class TestPhysicalServer:
     def test_cannot_fit_vm_due_to_lack_of_memory(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=128,
             available_network_bandwidth_kbps=2048,
@@ -63,6 +66,7 @@ class TestPhysicalServer:
     def test_cannot_fit_vm_due_to_lack_of_bandwidth(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=128,
             available_network_bandwidth_kbps=64,
@@ -82,6 +86,7 @@ class TestPhysicalServer:
     def test_allocate_success(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -100,6 +105,7 @@ class TestPhysicalServer:
     def test_allocate_failed(self):
         # Given
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -120,6 +126,7 @@ class TestResourceAllocator:
         allocator = ResourceAllocator()
 
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -140,12 +147,14 @@ class TestResourceAllocator:
         allocator = ResourceAllocator()
 
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
         )
         allocator.add_physical_server(ps)
         ps_large = PhysicalServer(
+            name="large",
             available_cores=10,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
@@ -165,18 +174,21 @@ class TestResourceAllocator:
         allocator = ResourceAllocator()
 
         ps = PhysicalServer(
+            name="one",
             available_cores=4,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
         )
         allocator.add_physical_server(ps)
         ps2 = PhysicalServer(
+            name="two",
             available_cores=5,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
         )
         allocator.add_physical_server(ps2)
         ps3 = PhysicalServer(
+            name="three",
             available_cores=3,
             available_memory_mb=2048,
             available_network_bandwidth_kbps=2048,
