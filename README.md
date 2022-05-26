@@ -1,6 +1,8 @@
 # VM Server Allocation
 
-This is basic CLI for allocating VMs to physical servers.
+This is basic CLI for allocating VMs to physical servers. It uses “best fit”
+approximation algorithm to compute the required amount of physical servers and
+the allocation of virtual machines to physical servers.
 
 ## Requirements
 
