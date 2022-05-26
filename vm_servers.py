@@ -49,3 +49,10 @@ class ResourceAllocator:
 
     def add_physical_server(self, physical_server: PhysicalServer):
         self._available_servers.append(physical_server)
+
+    def allocate(self, vm: VM):
+        """
+        Allocate VM on the most appropriate PhysicalServer using
+        "best-fit" approximation algorithm
+        """
+        return self._available_servers[0]

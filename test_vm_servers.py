@@ -1,5 +1,5 @@
 import pytest
-from vm_servers import VM, PhysicalServer
+from vm_servers import VM, PhysicalServer, ResourceAllocator
 
 
 class TestPhysicalServer:
@@ -113,3 +113,25 @@ class TestPhysicalServer:
         # When, Then
         with pytest.raises(ValueError):
             ps.allocate(vm)
+
+
+class TestResourceAllocator:
+    def test_allocate_on_first_server(self):
+        allocator = ResourceAllocator()
+
+        ps = PhysicalServer(
+            available_cores=4,
+            available_memory_mb=2048,
+            available_network_bandwidth_kbps=2048,
+        )
+        allocator.add_physical_server(ps)
+
+        vm = VM(
+            required_cores=1,
+            required_memory_mb=256,
+            required_network_bandwidth_kbps=128,
+        )
+
+        result = allocator.allocate(vm)
+
+        assert result is ps
